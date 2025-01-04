@@ -19,39 +19,49 @@ def get_random_verb(verb):
         return [verb["past"], random_number]
     else:
         return[ verb["past_participle"], random_number]
+def get_past_way():
+    return input("What's the past way of the verb?")
+def verify_past_way(verb, past):
+    return past == verb["past"]
+def get_past_participle_way():
+    return input("What's the past participle of the verb?")
+def verify_past_participle_way(verb, past_participle):
+    return past_participle == verb["past_participle"]
+def get_present_way():
+    return input("What's the present way of the verb?")
+def verify_present_way(verb, present):
+    return present == verb["present"]
+def correct():
+    print("Correct")
+def incorrect():
+    print("Incorrect")
 def ask_past_and_past_participle(verb):
-    past = input("What's the past way of the verb?")
-    if past == verb["past"]:
-        print("Correct")
+    if verify_past_way(verb, get_past_way()):
+        correct()
     else:
-        print("Incorrect")
-    past_participle = input("What's the past participle of the verb?")
-    if past_participle == verb["past_participle"]:
-        print("Correct")
+        incorrect()
+    if verify_past_participle_way(verb, get_past_participle_way()):
+        correct()
     else:
-        print("Incorrect")
+        incorrect()
 def ask_present_and_past_participle(verb):
-    present = input("What's the present way of the verb?")
-    if present == verb["present"]:
-        print("Correct")
+    if verify_present_way(verb, get_present_way()):
+        correct()
     else:
-        print("Incorrect")
-    past_participle = input("What's the past participle of the verb?")
-    if past_participle == verb["past_participle"]:
-        print("Correct")
+        incorrect()
+    if verify_past_participle_way(verb, get_past_participle_way()):
+        correct()
     else:
-        print("Incorrect")
+        incorrect()
 def ask_present_and_past_simple(verb):
-    present = input("What's the present way of the verb?")
-    if present == verb["present"]:
-        print("Correct")
+    if verify_present_way(verb, get_present_way()):
+        correct()
     else:
-        print("Incorrect")
-    past = input("What's the past way of the verb?")
-    if past == verb["past"]:
-        print("Correct")
+        incorrect()
+    if verify_past_way(verb, get_past_way()):
+        correct()
     else:
-        print("Incorrect")
+        incorrect()
 def ask_default_forms(verb, random_number):
     match random_number:
         case 0:
