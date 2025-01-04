@@ -37,14 +37,16 @@ class VerbQuizGame:
 
     def get_user_input(self, prompt: str, attempts: int = 3) -> Optional[str]:
         """Get user input with retry logic and validation."""
-        for _ in range(attempts):
+        while attempts > 0:
             try:
                 user_input = input(prompt).strip().lower()
                 if not user_input:
                     print("Input cannot be empty. Please try again.")
+                    attempts -= 1
                     continue
                 if any(char.isdigit() for char in user_input):
                     print("Input cannot contain numbers. Please try again.")
+                    attempts -= 1
                     continue
                 return user_input
             except EOFError:
@@ -88,10 +90,8 @@ class VerbQuizGame:
             for form_name, form_getter in prompts[form_index]:
                 prompt = f"What's the {form_name} form of the verb? "
                 answer = self.get_user_input(prompt, self.max_attempts)
-                
                 if answer is None:
                     raise QuizGameError("Maximum attempts reached or game interrupted")
-                
                 if not self.handle_answer(
                     self.verify_answer(form_getter(verb), answer)
                 ):
@@ -104,11 +104,9 @@ class VerbQuizGame:
         """Run the quiz game."""
         try:
             print("\n=== Welcome to the Verb Quiz Game! ===\n")
-            
             for verb in self.verbs:
                 verb_form, form_index = self.get_random_verb(verb)
                 print(f"\nRandom verb form: {verb_form}")
-                
                 if not self.ask_verb_forms(verb, form_index):
                     print(f"\nGame Over! Final score: {self.current_score}")
                     return
