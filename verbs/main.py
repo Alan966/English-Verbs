@@ -1,83 +1,144 @@
 import random
-verbs= [
-    {
-        "present": "be",
-        "past": "was",
-        "past_participle": "been"
-    },
-    {
-        "present": "have",
-        "past": "had",
-        "past_participle": "had"
-    }
-]
-def get_random_verb(verb):
-    random_number = random.randint(0, 2)
-    if random_number == 0:
-        return [verb["present"], random_number]
-    elif random_number == 1:
-        return [verb["past"], random_number]
-    else:
-        return[ verb["past_participle"], random_number]
-def get_past_way():
-    return input("What's the past way of the verb?")
-def verify_past_way(verb, past):
-    return past == verb["past"]
-def get_past_participle_way():
-    return input("What's the past participle of the verb?")
-def verify_past_participle_way(verb, past_participle):
-    return past_participle == verb["past_participle"]
-def get_present_way():
-    return input("What's the present way of the verb?")
-def verify_present_way(verb, present):
-    return present == verb["present"]
-def correct():
-    print("Correct")
-def incorrect():
-    print("Incorrect")
-def ask_past_and_past_participle(verb):
-    if verify_past_way(verb, get_past_way()):
-        correct()
-    else:
-        incorrect()
-    if verify_past_participle_way(verb, get_past_participle_way()):
-        correct()
-    else:
-        incorrect()
-def ask_present_and_past_participle(verb):
-    if verify_present_way(verb, get_present_way()):
-        correct()
-    else:
-        incorrect()
-    if verify_past_participle_way(verb, get_past_participle_way()):
-        correct()
-    else:
-        incorrect()
-def ask_present_and_past_simple(verb):
-    if verify_present_way(verb, get_present_way()):
-        correct()
-    else:
-        incorrect()
-    if verify_past_way(verb, get_past_way()):
-        correct()
-    else:
-        incorrect()
-def ask_default_forms(verb, random_number):
-    match random_number:
-        case 0:
-            ask_past_and_past_participle(verb)
-        case 1:
-            ask_present_and_past_participle(verb)
-        case 2:
-            ask_present_and_past_simple(verb)
+from typing import Dict, List, Tuple, Optional
+from dataclasses import dataclass
+
+@dataclass
+class Verb:
+    present: str
+    past: str
+    past_participle: str
+
+class InvalidVerbFormError(Exception):
+    """Raised when an invalid verb form is encountered."""
+    pass
+
+class QuizGameError(Exception):
+    """Base class for quiz game exceptions."""
+    pass
+
+class VerbQuizGame:
+    def __init__(self, verbs: List[Dict[str, str]]):
+        self.verbs = [Verb(**verb) for verb in verbs]
+        self.current_score = 0
+        self.max_attempts = 3
+
+    def get_random_verb(self, verb: Verb) -> Tuple[str, int]:
+        """Returns a random verb form and its corresponding index."""
+        try:
+            random_number = random.randint(0, 2)
+            verb_forms = {
+                0: verb.present,
+                1: verb.past,
+                2: verb.past_participle
+            }
+            return verb_forms[random_number], random_number
+        except KeyError as e:
+            raise InvalidVerbFormError(f"Invalid verb form index: {e}")
+
+    def get_user_input(self, prompt: str, attempts: int = 3) -> Optional[str]:
+        """Get user input with retry logic and validation."""
+        for _ in range(attempts):
+            try:
+                user_input = input(prompt).strip().lower()
+                if not user_input:
+                    print("Input cannot be empty. Please try again.")
+                    continue
+                if any(char.isdigit() for char in user_input):
+                    print("Input cannot contain numbers. Please try again.")
+                    continue
+                return user_input
+            except EOFError:
+                print("\nInput terminated. Please try again.")
+            except KeyboardInterrupt:
+                print("\nGame interrupted by user.")
+                return None
+        return None
+
+    def verify_answer(self, expected: str, actual: str) -> bool:
+        """Verify if the provided answer matches the expected one."""
+        return expected.lower() == actual.lower()
+
+    def handle_answer(self, is_correct: bool) -> bool:
+        """Handle the result of an answer and return whether to continue."""
+        if is_correct:
+            print("✓ Correct!")
+            self.current_score += 1
+            return True
+        print("✗ Incorrect!")
+        return False
+
+    def ask_verb_forms(self, verb: Verb, form_index: int) -> bool:
+        """Ask for different verb forms based on the given form."""
+        prompts = {
+            0: [
+                ("past", lambda v: v.past),
+                ("past participle", lambda v: v.past_participle)
+            ],
+            1: [
+                ("present", lambda v: v.present),
+                ("past participle", lambda v: v.past_participle)
+            ],
+            2: [
+                ("present", lambda v: v.present),
+                ("past", lambda v: v.past)
+            ]
+        }
+
+        try:
+            for form_name, form_getter in prompts[form_index]:
+                prompt = f"What's the {form_name} form of the verb? "
+                answer = self.get_user_input(prompt, self.max_attempts)
+                
+                if answer is None:
+                    raise QuizGameError("Maximum attempts reached or game interrupted")
+                
+                if not self.handle_answer(
+                    self.verify_answer(form_getter(verb), answer)
+                ):
+                    return False
+            return True
+        except KeyError:
+            raise InvalidVerbFormError(f"Invalid form index: {form_index}")
+
+    def run(self):
+        """Run the quiz game."""
+        try:
+            print("\n=== Welcome to the Verb Quiz Game! ===\n")
+            
+            for verb in self.verbs:
+                verb_form, form_index = self.get_random_verb(verb)
+                print(f"\nRandom verb form: {verb_form}")
+                
+                if not self.ask_verb_forms(verb, form_index):
+                    print(f"\nGame Over! Final score: {self.current_score}")
+                    return
+
+            print(f"\nCongratulations! You completed the quiz! Score: {self.current_score}")
+
+        except InvalidVerbFormError as e:
+            print(f"Error in verb data: {e}")
+        except QuizGameError as e:
+            print(f"Game error: {e}")
+        except Exception as e:
+            print(f"An unexpected error occurred: {e}")
+        finally:
+            print("\nThanks for playing!")
+
 def main():
-    print("We'll start this game")
-    length = verbs.__len__()
-    for i in range(length):
-        verb = verbs[i]
-        [verb_to_show, random_number] = get_random_verb(verb)
-        print(f"Random verb: {verb_to_show}")
-        ask_default_forms(verb, random_number)
+    verbs = [
+        {
+            "present": "be",
+            "past": "was",
+            "past_participle": "been"
+        },
+        {
+            "present": "have",
+            "past": "had",
+            "past_participle": "had"
+        }
+    ]
+    game = VerbQuizGame(verbs)
+    game.run()
 
 if __name__ == "__main__":
     main()
