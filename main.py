@@ -32,15 +32,15 @@ def get_discountCode():
     discountCode = input("Do you have a first discount code? ")
     return discountCode
 def verify_discountCode(discountCode):
-    return discountCode == "ILOVEPYTHON" or discountCode == "PYTHON-ROCKS" or discountCode == "DRAKE-2021"
+    return discountCode == "DRAKE" or discountCode == "PARTYNEXTDOOR" or discountCode =="TYLOR,THECREATOR"
 def verify_discountCodes_with_percentage(discountCode):
     match discountCode:
-        case "ILOVEPYTHON":
-            return 0.05
-        case "PYTHON-ROCKS":
+        case "DRAKE":
+            return 0.25
+        case "PARTYNEXTDOOR":
             return 0.1
-        case "DRAKE-2021":
-            return 0.15
+        case "TYLOR,THECREATOR":
+            return 0.05
         case _:
             return
 def could_play_game(discount_code, bank_account):
