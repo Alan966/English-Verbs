@@ -1,4 +1,4 @@
-import verbs.mainVerbs as verbs
+import verbs.main as verbs
 def main():
     print("We'll start this game")
     name = get_name()
