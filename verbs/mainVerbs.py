@@ -1,6 +1,7 @@
 import random
 from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass
+import sys
 
 @dataclass
 class Verb:
@@ -122,7 +123,7 @@ class VerbQuizGame:
         finally:
             print("\nThanks for playing!")
 
-def main():
+def mainVerbs():
     verbs = [
         {
             "present": "be",
@@ -139,4 +140,4 @@ def main():
     game.run()
 
 if __name__ == "__main__":
-    main()
+    mainVerbs()
