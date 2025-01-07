@@ -1,4 +1,4 @@
-import verbs.mainVerbs as mainVerbs
+import verbs.mainVerbs as verbs
 def main():
     print("We'll start this game")
     name = get_name()
@@ -14,7 +14,7 @@ def main():
         print("You don't have enough money to play this game")
         return
     print("You can play this game")
-    mainVerbs.mainVerbs()
+    verbs.start()
 
 def get_name():
     name = input("What's your name? ")

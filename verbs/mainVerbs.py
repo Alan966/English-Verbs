@@ -123,7 +123,7 @@ class VerbQuizGame:
         finally:
             print("\nThanks for playing!")
 
-def mainVerbs():
+def start():
     verbs = [
         {
             "present": "be",
@@ -140,4 +140,4 @@ def mainVerbs():
     game.run()
 
 if __name__ == "__main__":
-    mainVerbs()
+    start()
