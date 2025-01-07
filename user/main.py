@@ -1,0 +1,51 @@
+from dataclasses import dataclass
+
+@dataclass
+class IUser:
+    name: str
+    age: int
+    bank_account: float
+    favorite_artist: str
+class User (IUser):
+    def __init__(self, name: str, age:int, bank_account: float, favorite_artist: str):
+        self.name = name
+        self.age = age
+        self.bank_account = bank_account
+        self.favorite_artist = favorite_artist
+    def get_name(self):
+        return self.name
+
+    def get_age(self):
+        return self.age
+    def is_old_enough(self):
+        return self.age >= 18
+    def get_bank_account(self):
+        return self.bank_account
+    def get_favorite_artist(self):
+        return self.favorite_artist
+    def verify_favorite_artist(self):
+            if(self.favorite_artist.startswith("DRAKE")):
+                return "DRAKE"
+            elif(self.favorite_artist.startswith("PARTYNEXTDOOR")):
+                return "PARTYNEXTDOOR"
+            elif(self.favorite_artist.startswith("TYLOR THE CREATOR")):
+                return "TYLOR THE CREATOR"
+    def get_discount_by_artist(self):
+        match self.favorite_artist:
+            case "DRAKE":
+                return 0.25
+            case "PARTYNEXTDOOR":
+                return 0.1
+            case "TYLOR THE CREATOR":
+                return 0.05
+            case _:
+                return
+    def verify_bank_account(self):
+        return self.bank_account >= 100
+    def could_play_game(self):
+        formatted_artist = self.verify_favorite_artist()
+        if formatted_artist == None:
+            return self.verify_bank_account()
+        else:
+            discount = self.get_discount_by_artist() or 0
+            return self.bank_account >= 100 * (1 - discount)
