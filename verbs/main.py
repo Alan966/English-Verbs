@@ -1,7 +1,6 @@
 import random
 from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass
-import sys
 
 @dataclass
 class Verb:
