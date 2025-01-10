@@ -14,7 +14,6 @@ class User (IUser):
         self.favorite_artist = favorite_artist
     def get_name(self):
         return self.name
-
     def get_age(self):
         return self.age
     def is_old_enough(self):
@@ -39,13 +38,49 @@ class User (IUser):
             case "TYLOR THE CREATOR":
                 return 0.05
             case _:
-                return
+                raise Exception("Artist not found")
     def verify_bank_account(self):
-        return self.bank_account >= 100
+        if(self.bank_account >= 100 == False):
+            raise Exception("You don't have enough money to play this game")
+        return
+
     def could_play_game(self):
         formatted_artist = self.verify_favorite_artist()
         if formatted_artist == None:
             return self.verify_bank_account()
         else:
-            discount = self.get_discount_by_artist() or 0
-            return self.bank_account >= 100 * (1 - discount)
+             if(self.bank_account >= 100 * (1 - self.get_discount_by_artist())):
+                 raise Exception("You don't have enough money to play this game")
+
+
+def get_name():
+    name = input("What's your name? ")
+    return name.strip().title()
+def get_age():
+    age = input("What's your age? ")
+    return int(age)
+def get_bank_account():
+    bank_account = input("How much money do you have in your bank account? ")
+    return round(float(bank_account), 2)
+def get_favorite_artist():
+    favorite_artist = input("Who is your favorite Artist? ")
+    return favorite_artist.strip().upper()
+
+def main():
+    print("We'll start this game")
+    #Ask the user their age
+    name = get_name()
+    age = get_age()
+    bank_account = get_bank_account()
+    favorite_artis = get_favorite_artist()
+    try:
+        user = User(name, age, bank_account, favorite_artis)
+    except Exception as e:
+        print(f"Error creating user: {e}")
+        could_play = user.could_play_game()
+        if could_play == False:
+            print("You don't have enough money to play this game")
+            return
+        return
+    else:
+        print("You don't have enough money to play this game")
