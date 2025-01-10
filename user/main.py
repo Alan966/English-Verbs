@@ -60,36 +60,23 @@ def get_name():
     while True:
         try:
             name = input("What's your name? ")
-            name.strip()
-            print("Name cannot be empty. Please try again.")
+            return name.strip().title()
         except ValueError:
-            print("Invalid input. Please enter a valid name.")
-            continue
-        else:
-            break
-    return name.title()
+            pass
 def get_age():
     while True:
         try:
             age = input("What's your age? ")
-            age = int(age)
+            return int(age)
         except ValueError:
-            print("Invalid input. Please enter a valid number.")
-            continue
-        else:
-            break
-    return age
+            pass
 def get_bank_account():
     while True:
         try:
             bank_account = input("How much money do you have in your bank account? ")
-            bank_account = float(bank_account)
+            return float(bank_account)
         except ValueError:
-            print("Invalid input. Please enter a valid number.")
-            continue
-        else:
-            break
-    return bank_account
+            pass
 def get_favorite_artist():
     favorite_artist = input("Who is your favorite Artist? ")
     return favorite_artist.strip().upper()

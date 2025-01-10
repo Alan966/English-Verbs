@@ -92,10 +92,16 @@ class VerbQuizGame:
         except KeyError:
             raise InvalidVerbFormError(f"Invalid form index: {form_index}")
 
+    def shortRandomVerb(self):
+        length = len(self.verbs)
+        random_verbs = []
+        for _ in range(0, length):
+            random_verbs.append(random.choice(self.verbs))
+        return random_verbs
     def run(self):
         """Run the quiz game."""
         print("\n=== Welcome to the Verb Quiz Game! ===\n")
-        for verb in self.verbs:
+        for verb in self.shortRandomVerb():
                 verb_form, form_index = self.get_random_verb(verb)
                 print(f"\nRandom verb form: {verb_form}")
                 if not self.ask_verb_forms(verb, form_index):
