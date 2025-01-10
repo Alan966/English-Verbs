@@ -73,14 +73,5 @@ def main():
     age = get_age()
     bank_account = get_bank_account()
     favorite_artis = get_favorite_artist()
-    try:
-        user = User(name, age, bank_account, favorite_artis)
-    except Exception as e:
-        print(f"Error creating user: {e}")
-        could_play = user.could_play_game()
-        if could_play == False:
-            print("You don't have enough money to play this game")
-            return
-        return
-    else:
-        print("You don't have enough money to play this game")
+    user = User(name, age, bank_account, favorite_artis)
+    user.could_play_game()
