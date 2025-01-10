@@ -1,21 +1,13 @@
 import random
 from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass
+from handlers.Errors import InvalidVerbFormError, QuizGameError
 
 @dataclass
 class Verb:
     present: str
     past: str
     past_participle: str
-
-class InvalidVerbFormError(Exception):
-    """Raised when an invalid verb form is encountered."""
-    pass
-
-class QuizGameError(Exception):
-    """Base class for quiz game exceptions."""
-    pass
-
 class VerbQuizGame:
     def __init__(self, verbs: List[Dict[str, str]]):
         self.verbs = [Verb(**verb) for verb in verbs]
@@ -102,26 +94,15 @@ class VerbQuizGame:
 
     def run(self):
         """Run the quiz game."""
-        try:
-            print("\n=== Welcome to the Verb Quiz Game! ===\n")
-            for verb in self.verbs:
+        print("\n=== Welcome to the Verb Quiz Game! ===\n")
+        for verb in self.verbs:
                 verb_form, form_index = self.get_random_verb(verb)
                 print(f"\nRandom verb form: {verb_form}")
                 if not self.ask_verb_forms(verb, form_index):
                     print(f"\nGame Over! Final score: {self.current_score}")
                     return
 
-            print(f"\nCongratulations! You completed the quiz! Score: {self.current_score}")
-
-        except InvalidVerbFormError as e:
-            print(f"Error in verb data: {e}")
-        except QuizGameError as e:
-            print(f"Game error: {e}")
-        except Exception as e:
-            print(f"An unexpected error occurred: {e}")
-        finally:
-            print("\nThanks for playing!")
-
+        print(f"\nCongratulations! You completed the quiz! Score: {self.current_score}")
 def start():
     verbs = [
         {
