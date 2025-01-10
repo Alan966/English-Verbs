@@ -1,5 +1,5 @@
 from dataclasses import dataclass
-
+from handlers.Errors import BankAccountError
 @dataclass
 class IUser:
     name: str
@@ -24,11 +24,13 @@ class User (IUser):
         return self.favorite_artist
     def verify_favorite_artist(self):
             if(self.favorite_artist.startswith("DRAKE")):
-                return "DRAKE"
+                self.favorite_artist = "DRAKE"
             elif(self.favorite_artist.startswith("PARTYNEXTDOOR")):
-                return "PARTYNEXTDOOR"
+                self.favorite_artist = "PARTYNEXTDOOR"
             elif(self.favorite_artist.startswith("TYLOR THE CREATOR")):
-                return "TYLOR THE CREATOR"
+                self.favorite_artist = "TYLOR THE CREATOR"
+            else:
+                self.favorite_artist = None
     def get_discount_by_artist(self):
         match self.favorite_artist:
             case "DRAKE":
@@ -40,19 +42,20 @@ class User (IUser):
             case _:
                 raise Exception("Artist not found")
     def verify_bank_account(self):
-        if(self.bank_account >= 100 == False):
-            raise Exception("You don't have enough money to play this game")
-        return
+        if(self.bank_account < 100):
+            print(self.bank_account)
+            print("You don't have enough money to play this game")
+            raise BankAccountError("You balance is : " + str(self.bank_account))
+        else:
+            print("You have enough money to play this game")
 
     def could_play_game(self):
-        formatted_artist = self.verify_favorite_artist()
-        if formatted_artist == None:
+        self.verify_favorite_artist()
+        if self.favorite_artist == None:
             return self.verify_bank_account()
         else:
              if(self.bank_account >= 100 * (1 - self.get_discount_by_artist())):
                  raise Exception("You don't have enough money to play this game")
-
-
 def get_name():
     name = input("What's your name? ")
     return name.strip().title()
