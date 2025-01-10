@@ -2,6 +2,7 @@ import random
 from typing import Dict, List, Tuple, Optional
 from dataclasses import dataclass
 from handlers.Errors import InvalidVerbFormError, QuizGameError
+import cowsay
 
 @dataclass
 class Verb:
@@ -108,7 +109,7 @@ class VerbQuizGame:
                     print(f"\nGame Over! Final score: {self.current_score}")
                     return
 
-        print(f"\nCongratulations! You completed the quiz! Score: {self.current_score}")
+        cowsay.cow(f"Congratulations! You completed the quiz! Score: {self.current_score}")
 def start():
     verbs = [
         {
