@@ -1,8 +1,6 @@
 import verbs.main as verbs
 import user.main as user
 def main():
-    print("We'll start this game")
-    #Ask the user their age
     try:
         user.main()
         verbs.start()
