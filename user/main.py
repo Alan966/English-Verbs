@@ -45,7 +45,7 @@ class User (IUser):
         if(self.bank_account < 100):
             print(self.bank_account)
             print("You don't have enough money to play this game")
-            raise BankAccountError("You balance is : " + str(self.bank_account))
+            raise BankAccountError(f"You balance is : {self.bank_account}")
         else:
             print("You have enough money to play this game")
 
@@ -63,8 +63,11 @@ def get_age():
     age = input("What's your age? ")
     return int(age)
 def get_bank_account():
-    bank_account = input("How much money do you have in your bank account? ")
-    return round(float(bank_account), 2)
+    try:
+        bank_account = input("How much money do you have in your bank account? ")
+        return round(float(bank_account), 2)
+    except ValueError:
+        raise BankAccountError("Invalid bank account value")
 def get_favorite_artist():
     favorite_artist = input("Who is your favorite Artist? ")
     return favorite_artist.strip().upper()
