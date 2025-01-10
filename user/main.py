@@ -57,17 +57,39 @@ class User (IUser):
              if(self.bank_account >= 100 * (1 - self.get_discount_by_artist())):
                  raise Exception("You don't have enough money to play this game")
 def get_name():
-    name = input("What's your name? ")
-    return name.strip().title()
+    while True:
+        try:
+            name = input("What's your name? ")
+            name.strip()
+            print("Name cannot be empty. Please try again.")
+        except ValueError:
+            print("Invalid input. Please enter a valid name.")
+            continue
+        else:
+            break
+    return name.title()
 def get_age():
-    age = input("What's your age? ")
-    return int(age)
+    while True:
+        try:
+            age = input("What's your age? ")
+            age = int(age)
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
+            continue
+        else:
+            break
+    return age
 def get_bank_account():
-    try:
-        bank_account = input("How much money do you have in your bank account? ")
-        return round(float(bank_account), 2)
-    except ValueError:
-        raise BankAccountError("Invalid bank account value")
+    while True:
+        try:
+            bank_account = input("How much money do you have in your bank account? ")
+            bank_account = float(bank_account)
+        except ValueError:
+            print("Invalid input. Please enter a valid number.")
+            continue
+        else:
+            break
+    return bank_account
 def get_favorite_artist():
     favorite_artist = input("Who is your favorite Artist? ")
     return favorite_artist.strip().upper()
