@@ -83,7 +83,6 @@ def get_favorite_artist():
 
 def main():
     print("We'll start this game")
-    #Ask the user their age
     name = get_name()
     age = get_age()
     bank_account = get_bank_account()
